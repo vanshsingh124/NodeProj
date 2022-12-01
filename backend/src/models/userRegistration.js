@@ -42,12 +42,24 @@ employeeSchema.methods.generateAuthToken = async function (req,res) {
         let tokeng = jwt.sign({_id:this._id.toString()},process.env.SECRET_KEY)
         this.tokens = this.tokens.concat({token:tokeng})
         await this.save()
-        // console.log(token)
+        return tokeng
 
     }catch(err){
         res.send(`There is some error and the error is${err}`)
     }
 }
+// employeeSchema.statics.generateAuthToken2 = async function (req,res) {
+//     try{
+//         jwt.sign takes three argument First is unique identifier,Second argument takes the SecretKey or PrivateKey,Third one is callback
+//         let tokeng = await jwt.sign({_id:this._id.toString()},process.env.SECRET_KEY)
+//         this.tokens = this.tokens.concat({token:tokeng})
+//         await this.save()
+//         console.log(tokeng)
+
+//     }catch(err){
+//         res.send(`There is some error and the error is${err}`)
+//     }
+// }
 
 //Conveting the password into hash
 //pre execution hooks are processing scripts that run before and after actual data processing is performed.

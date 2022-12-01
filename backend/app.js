@@ -55,7 +55,7 @@ app.post("/", async function (req, res) {
             let result = await register.save()
             console.log(`The result is ${result}`)
             res.status(201).render("D:/back-end/nodeproj/backend/template/views/index.hbs")
-            console.log(`The data is${process.env.SECRET_KEY}`)
+            console.log(`The Secret Key is${process.env.SECRET_KEY}`)
 
          
         }else {
@@ -82,21 +82,29 @@ app.post("/login", async function (req, res) {
         let password = req.body.password
 
         let find = await EmployeeModel.findOne({ email: useremail })
+        // console.log(`The result is here ${find}`)
 
+        
+        
         let match = await bcrypt.compare(password, find.password)//First argument takes the user password during login,Second argument takes the password that stored on database.Then it will check.
         // console.log(find)
 
+        let token = await find.generateAuthToken()//This will generate the token for verification.
+        console.log(`The token is ${token}`)
+        
+        
         // if(find.password===password){//find.password resembles the password that stored on database and password resembles the password that the user going to enter and if the find.password and password will match then the user looged successfully.
         //     res.status(201).render("D:/back-end/nodeproj/backend/template/views/index.hbs")
         // }else{
-        //     res.send("Invalid Login Details") 
-        // }
-        if (match) {
-            res.status(201).render("D:/back-end/nodeproj/backend/template/views/index.hbs")
-        }
-        else {
-            res.send("Invalid Login Details")
-        }
+            //     res.send("Invalid Login Details") 
+            // }
+            if (match) {
+                res.status(201).render("D:/back-end/nodeproj/backend/template/views/index.hbs")
+            }
+            else {
+                res.send("Invalid Login Details")
+            }
+           
 
 
     } catch (err) {
